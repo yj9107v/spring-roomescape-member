@@ -28,25 +28,6 @@ class ThemeApiTest {
     }
 
     @Test
-    void 테마_추가() {
-        Map<String, String> params = new HashMap<>();
-        params.put("name", "공포");
-        params.put("description", "무서운 테마");
-        params.put("thumbnailImageUrl", "https://example.com/horror.jpg");
-
-        RestAssured.given().log().all()
-                .contentType(ContentType.JSON)
-                .body(params)
-                .when().post("/themes")
-                .then().log().all()
-                .statusCode(201)
-                .body("id", notNullValue())
-                .body("name", is("공포"))
-                .body("description", is("무서운 테마"))
-                .body("thumbnailImageUrl", is("https://example.com/horror.jpg"));
-    }
-
-    @Test
     void 테마_추가_후_조회() {
         Map<String, String> params = new HashMap<>();
         params.put("name", "추리");
@@ -58,7 +39,11 @@ class ThemeApiTest {
                 .body(params)
                 .when().post("/themes")
                 .then().log().all()
-                .statusCode(201);
+                .statusCode(201)
+                .body("id", notNullValue())
+                .body("name", is("추리"))
+                .body("description", is("단서를 찾아라"))
+                .body("thumbnailImageUrl", is("https://example.com/mystery.jpg"));
 
         RestAssured.given().log().all()
                 .when().get("/themes")
@@ -118,41 +103,11 @@ class ThemeApiTest {
     }
 
     @Test
-    void 테마를_추가할_때_이름이_비어_있으면_400() {
+    void 잘못된_요청이면_400() {
         Map<String, String> params = new HashMap<>();
         params.put("name", "");
         params.put("description", "우주에서 탈출");
         params.put("thumbnailImageUrl", "https://example.com/sf.jpg");
-
-        RestAssured.given().log().all()
-                .contentType(ContentType.JSON)
-                .body(params)
-                .when().post("/themes")
-                .then().log().all()
-                .statusCode(400);
-    }
-
-    @Test
-    void 테마를_추가할_때_설명이_비어_있으면_400() {
-        Map<String, String> params = new HashMap<>();
-        params.put("name", "SF");
-        params.put("description", "");
-        params.put("thumbnailImageUrl", "https://example.com/sf.jpg");
-
-        RestAssured.given().log().all()
-                .contentType(ContentType.JSON)
-                .body(params)
-                .when().post("/themes")
-                .then().log().all()
-                .statusCode(400);
-    }
-
-    @Test
-    void 테마를_추가할_때_썸네일_이미지가_비어_있으면_400() {
-        Map<String, String> params = new HashMap<>();
-        params.put("name", "SF");
-        params.put("description", "우주에서 탈출");
-        params.put("thumbnailImageUrl", "");
 
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)

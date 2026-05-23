@@ -31,21 +31,6 @@ class ReservationTimeApiTest {
     }
 
     @Test
-    void 시간_추가() {
-        Map<String, String> params = new HashMap<>();
-        params.put("startAt", "10:00");
-
-        RestAssured.given().log().all()
-                .contentType(ContentType.JSON)
-                .body(params)
-                .when().post("/times")
-                .then().log().all()
-                .statusCode(201)
-                .body("id", notNullValue())
-                .body("startAt", is("10:00"));
-    }
-
-    @Test
     void 시간_추가_후_조회() {
         Map<String, String> params = new HashMap<>();
         params.put("startAt", "13:30");
@@ -55,7 +40,9 @@ class ReservationTimeApiTest {
                 .body(params)
                 .when().post("/times")
                 .then().log().all()
-                .statusCode(201);
+                .statusCode(201)
+                .body("id", notNullValue())
+                .body("startAt", is("13:30"));
 
         RestAssured.given().log().all()
                 .when().get("/times")
