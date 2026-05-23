@@ -16,7 +16,7 @@ import roomescape.repository.ReservationTimeRepository;
 @Import({
         JdbcReservationTimeRepository.class,
 })
-class ReservationTimeRepositoryTest {
+class JdbcReservationTimeRepositoryTest {
 
     private static final LocalTime TEN = LocalTime.of(10, 0);
     private static final LocalTime TWELVE = LocalTime.of(12, 0);

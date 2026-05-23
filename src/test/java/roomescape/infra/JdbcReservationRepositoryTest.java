@@ -24,7 +24,7 @@ import roomescape.repository.ThemeRepository;
         JdbcReservationTimeRepository.class,
         JdbcThemeRepository.class
 })
-class ReservationRepositoryTest {
+class JdbcReservationRepositoryTest {
 
     private static final LocalDate FUTURE_SECOND_DATE = LocalDate.now().plusDays(2);
     private static final LocalDate FUTURE_THIRD_DATE = LocalDate.now().plusDays(3);

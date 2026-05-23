@@ -17,7 +17,7 @@ import roomescape.repository.ThemeRepository;
 @Import({
         JdbcThemeRepository.class,
 })
-class ThemeRepositoryTest {
+class JdbcThemeRepositoryTest {
 
     private static final String THEME_NAME = "방탈출 제목";
     private static final String THEME_DESCRIPTION = "방탈출 설명";
