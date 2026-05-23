@@ -158,10 +158,10 @@ class ReservationRepositoryTest {
         ReservationTime reservationTime = createReservationTime(TEN);
         Theme theme = createTheme();
 
-        reservationRepository.save(new Reservation(
-                "브라운", findDate, reservationTime, theme));
+        Reservation reservation = new Reservation("브라운", findDate, reservationTime, theme);
+        reservationRepository.save(reservation);
 
-        assertThat(reservationRepository.existsBy(findDate, reservationTime.getId(), theme.getId())).isTrue();
+        assertThat(reservationRepository.existsBy(reservation)).isTrue();
     }
 
     @Test

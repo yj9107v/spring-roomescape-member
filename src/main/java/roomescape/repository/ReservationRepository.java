@@ -21,15 +21,15 @@ public interface ReservationRepository {
 
     boolean existsByThemeId(Long themeId);
 
-    boolean existsBy(LocalDate date, Long timeId, Long themeId);
+    boolean existsBy(Reservation reservation);
 
     Long save(Reservation Reservation);
 
     void deleteById(Long id);
 
-    void updateDateTime(Long id, LocalDate date, Long timeId);
+    void updateDateTime(Reservation updated);
 
-    default Reservation getById(Long id) {
-        return findById(id).orElseThrow(() -> new ResourceNotFoundException("존재하지 않는 예약입니다."));
+    default Reservation getById(Long id, String message) {
+        return findById(id).orElseThrow(() -> new ResourceNotFoundException(message));
     }
 }

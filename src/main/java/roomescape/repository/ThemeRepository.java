@@ -18,7 +18,7 @@ public interface ThemeRepository {
 
     void deleteById(Long id);
 
-    default Theme getById(Long id) {
-        return findById(id).orElseThrow(() -> new ResourceNotFoundException("존재하지 않는 테마입니다."));
+    default Theme getById(Long id, String message) {
+        return findById(id).orElseThrow(() -> new ResourceNotFoundException(message));
     }
 }

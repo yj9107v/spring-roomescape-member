@@ -27,7 +27,7 @@ public class ThemeService {
     }
 
     public Theme getTheme(Long id) {
-        return themeRepository.getById(id);
+        return themeRepository.getById(id, "존재하지 않는 테마입니다.");
     }
 
     public List<Theme> getPopularTop10Themes(LocalDate now, Integer days) {

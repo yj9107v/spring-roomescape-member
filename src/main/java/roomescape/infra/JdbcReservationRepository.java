@@ -121,7 +121,7 @@ public class JdbcReservationRepository implements ReservationRepository {
     }
 
     @Override
-    public boolean existsBy(LocalDate date, Long timeId, Long themeId) {
+    public boolean existsBy(Reservation reservation) {
         String sql = """
                 SELECT COUNT(*)
                 FROM reservation
@@ -130,9 +130,9 @@ public class JdbcReservationRepository implements ReservationRepository {
         Integer count = jdbcTemplate.queryForObject(
                 sql,
                 Integer.class,
-                date,
-                timeId,
-                themeId
+                reservation.getDate(),
+                reservation.getTime().getId(),
+                reservation.getTheme().getId()
         );
         return count != null && count > 0;
     }
@@ -160,13 +160,13 @@ public class JdbcReservationRepository implements ReservationRepository {
     }
 
     @Override
-    public void updateDateTime(Long id, LocalDate date, Long timeId) {
+    public void updateDateTime(Reservation updated) {
         String sql = """
                 UPDATE reservation
                 SET date = ?, time_id = ?
                 WHERE id = ?;
                 """;
 
-        jdbcTemplate.update(sql, date, timeId, id);
+        jdbcTemplate.update(sql, updated.getDate(), updated.getTime().getStartAt(), updated.getId());
     }
 }

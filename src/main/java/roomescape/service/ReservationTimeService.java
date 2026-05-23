@@ -30,7 +30,7 @@ public class ReservationTimeService {
     }
 
     public ReservationTime getReservationTime(Long id) {
-        return reservationtimeRepository.getById(id);
+        return reservationtimeRepository.getById(id, "존재하지 않는 예약 시간입니다.");
     }
 
     public List<ReservationTimeStatus> getTimeSlotsWithReservationStatus(LocalDate date, Long themeId) {
