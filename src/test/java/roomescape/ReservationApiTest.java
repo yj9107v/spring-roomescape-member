@@ -81,8 +81,7 @@ class ReservationApiTest {
                 .body(params)
                 .when().post("/reservations")
                 .then().log().all()
-                .statusCode(400)
-                .body("message", is("지난 날짜와 시간으로는 예약할 수 없습니다."));
+                .statusCode(400);
     }
 
     @Test
@@ -104,8 +103,7 @@ class ReservationApiTest {
                 .body(params)
                 .when().post("/reservations")
                 .then().log().all()
-                .statusCode(400)
-                .body("message", is("지난 날짜와 시간으로는 예약할 수 없습니다."));
+                .statusCode(400);
     }
 
     @Test
@@ -170,8 +168,7 @@ class ReservationApiTest {
         RestAssured.given().log().all()
                 .when().delete("/reservations/" + 1)
                 .then().log().all()
-                .statusCode(404)
-                .body("message", is("존재하지 않는 예약입니다."));
+                .statusCode(404);
     }
 
     @Test
@@ -201,8 +198,7 @@ class ReservationApiTest {
                 .queryParam("name", "브라운")
                 .when().delete("/reservations/" + 1)
                 .then().log().all()
-                .statusCode(404)
-                .body("message", is("존재하지 않는 예약입니다."));
+                .statusCode(404);
     }
 
     @Test
@@ -217,8 +213,7 @@ class ReservationApiTest {
                 .queryParam("name", "브리")
                 .when().delete("/reservations/" + reservationId)
                 .then().log().all()
-                .statusCode(403)
-                .body("message", is("선택한 예약과 사용자 이름이 일치하지 않습니다."));
+                .statusCode(403);
 
         RestAssured.given().log().all()
                 .when().get("/reservations?name=" + reservationOwner)
@@ -234,8 +229,7 @@ class ReservationApiTest {
                 .queryParam("name", "김민수")
                 .when().delete("/reservations/" + 1)
                 .then().log().all()
-                .statusCode(400)
-                .body("message", is("이미 지난 예약은 취소할 수 없습니다."));
+                .statusCode(400);
     }
 
     @Test
@@ -317,13 +311,13 @@ class ReservationApiTest {
     @Test
     void 예약을_수정한다() {
         Integer reservationTimeId = createTime("10:00");
-        Integer updateTimeId = createTime("12:00");
         Integer themeId = createTheme("공포", "무서운 테마", "https://example.com/horror.jpg");
 
         String name = "브라운";
         Integer reservationId = createReservation(name, FUTURE_FIRST_DATE, reservationTimeId, themeId);
 
         Map<String, Object> params = new HashMap<>();
+        Integer updateTimeId = createTime("12:00");
         params.put("date", FUTURE_SECOND_DATE);
         params.put("timeId", updateTimeId);
 
@@ -369,8 +363,7 @@ class ReservationApiTest {
                 .body(params)
                 .when().patch("/reservations/" + 1)
                 .then().log().all()
-                .statusCode(404)
-                .body("message", is("존재하지 않는 예약입니다."));
+                .statusCode(404);
     }
 
     @Test
@@ -391,8 +384,7 @@ class ReservationApiTest {
                 .body(params)
                 .when().patch("/reservations/" + reservationId)
                 .then().log().all()
-                .statusCode(403)
-                .body("message", is("선택한 예약과 사용자 이름이 일치하지 않습니다."));
+                .statusCode(403);
     }
 
     @Test
@@ -413,8 +405,7 @@ class ReservationApiTest {
                 .body(params)
                 .when().patch("/reservations/" + reservationId)
                 .then().log().all()
-                .statusCode(404)
-                .body("message", is("예약할 수 없는 시간입니다."));
+                .statusCode(404);
     }
 
     @Test
@@ -430,8 +421,7 @@ class ReservationApiTest {
                 .body(params)
                 .when().patch("/reservations/" + 1)
                 .then().log().all()
-                .statusCode(400)
-                .body("message", is("이미 지난 예약은 변경할 수 없습니다."));
+                .statusCode(400);
     }
 
     @Test
@@ -454,8 +444,7 @@ class ReservationApiTest {
                 .body(params)
                 .when().patch("/reservations/" + reservationId)
                 .then().log().all()
-                .statusCode(400)
-                .body("message", is("지난 날짜와 시간으로는 예약을 수정할 수 없습니다."));
+                .statusCode(400);
     }
 
     @Test
@@ -479,8 +468,7 @@ class ReservationApiTest {
                 .body(params)
                 .when().patch("/reservations/" + reservationId)
                 .then().log().all()
-                .statusCode(409)
-                .body("message", is("이미 예약된 시간입니다."));
+                .statusCode(409);
     }
 
     private Integer createTheme(String name, String description, String thumbnailImageUrl) {

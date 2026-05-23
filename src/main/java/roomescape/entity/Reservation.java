@@ -60,7 +60,7 @@ public class Reservation {
         if (LocalDateTime.of(newDate, newTime.getStartAt()).isBefore(now)) {
             throw new InvalidReservationException("과거 시점으로 변경할 수 없습니다.");
         }
-        return new Reservation(id, name, newDate, newTime, theme);
+        return new Reservation(id, this.name, newDate, newTime, theme);
     }
 
     private void verifyReservedBy(String other, String message) {

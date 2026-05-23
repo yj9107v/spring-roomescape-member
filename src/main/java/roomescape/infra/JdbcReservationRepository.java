@@ -167,6 +167,6 @@ public class JdbcReservationRepository implements ReservationRepository {
                 WHERE id = ?;
                 """;
 
-        jdbcTemplate.update(sql, updated.getDate(), updated.getTime().getStartAt(), updated.getId());
+        jdbcTemplate.update(sql, updated.getDate(), updated.getTime().getId(), updated.getId());
     }
 }

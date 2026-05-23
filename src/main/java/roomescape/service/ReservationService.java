@@ -101,7 +101,7 @@ public class ReservationService {
         );
         verifyNoConflict(updated);
         reservationRepository.updateDateTime(updated);
-        return updated;
+        return getReservation(id);
     }
 
     private void verifyNoConflict(Reservation reservation) {

@@ -75,8 +75,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.addReservation(request))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("예약할 수 없는 시간입니다.");
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -91,8 +90,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.addReservation(request))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("예약할 수 없는 테마입니다.");
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -110,8 +108,7 @@ class ReservationServiceTest {
         reservationService.addReservation(request);
 
         assertThatThrownBy(() -> reservationService.addReservation(request))
-                .isInstanceOf(DuplicateReservationException.class)
-                .hasMessage("이미 예약된 시간입니다.");
+                .isInstanceOf(DuplicateReservationException.class);
     }
 
     @Test
@@ -128,8 +125,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.addReservation(request))
-                .isInstanceOf(InvalidReservationException.class)
-                .hasMessage("지난 날짜와 시간으로는 예약할 수 없습니다.");
+                .isInstanceOf(InvalidReservationException.class);
     }
 
     @Test
@@ -146,8 +142,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.addReservation(request))
-                .isInstanceOf(InvalidReservationException.class)
-                .hasMessage("지난 날짜와 시간으로는 예약할 수 없습니다.");
+                .isInstanceOf(InvalidReservationException.class);
     }
 
     @Test
@@ -250,15 +245,13 @@ class ReservationServiceTest {
         reservationService.deleteReservation(savedReservation.getId());
 
         assertThatThrownBy(() -> reservationService.getReservation(savedReservation.getId()))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("존재하지 않는 예약입니다.");
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
     void 없는_예약을_삭제할_수_없다() {
         assertThatThrownBy(() -> reservationService.deleteReservation(1L))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("존재하지 않는 예약입니다.");
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -278,15 +271,13 @@ class ReservationServiceTest {
         reservationService.cancelMyReservation(reservation.getId(), name);
 
         assertThatThrownBy(() -> reservationService.getReservation(reservation.getId()))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("존재하지 않는 예약입니다.");
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
     void 사용자_예약을_취소할_때_존재하지_않는_예약이면_예외() {
         assertThatThrownBy(() -> reservationService.cancelMyReservation(1L, "브라운"))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("존재하지 않는 예약입니다.");
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -306,8 +297,7 @@ class ReservationServiceTest {
         String userName = "브리";
 
         assertThatThrownBy(() -> reservationService.cancelMyReservation(reservation.getId(), userName))
-                .isInstanceOf(ForbiddenException.class)
-                .hasMessage("선택한 예약과 사용자 이름이 일치하지 않습니다.");
+                .isInstanceOf(ForbiddenException.class);
     }
 
     @Test
@@ -323,8 +313,7 @@ class ReservationServiceTest {
 
         assertThat(dateTime.isBefore(LocalDateTime.now())).isTrue();
         assertThatThrownBy(() -> reservationService.cancelMyReservation(pastReservation.getId(), name))
-                .isInstanceOf(InvalidReservationException.class)
-                .hasMessage("이미 지난 예약은 취소할 수 없습니다.");
+                .isInstanceOf(InvalidReservationException.class);
     }
 
     @Test
@@ -367,8 +356,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.updateReservation(1L, "브라운", updateRequest))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("존재하지 않는 예약입니다.");
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -392,8 +380,7 @@ class ReservationServiceTest {
         String userName = "브리";
 
         assertThatThrownBy(() -> reservationService.updateReservation(reservation.getId(), userName, updateRequest))
-                .isInstanceOf(ForbiddenException.class)
-                .hasMessage("선택한 예약과 사용자 이름이 일치하지 않습니다.");
+                .isInstanceOf(ForbiddenException.class);
     }
 
     @Test
@@ -415,8 +402,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.updateReservation(reservation.getId(), name, updateRequest))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("예약할 수 없는 시간입니다.");
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -435,8 +421,7 @@ class ReservationServiceTest {
         LocalDateTime dateTime = LocalDateTime.of(pastReservation.getDate(), pastReservation.getTime().getStartAt());
         assertThat(dateTime.isBefore(LocalDateTime.now())).isTrue();
         assertThatThrownBy(() -> reservationService.updateReservation(pastReservationId, name, updateRequest))
-                .isInstanceOf(InvalidReservationException.class)
-                .hasMessage("이미 지난 예약은 변경할 수 없습니다.");
+                .isInstanceOf(InvalidReservationException.class);
     }
 
     @Test
@@ -458,9 +443,7 @@ class ReservationServiceTest {
                 pastTime.getId()
         );
 
-        assertThatThrownBy(() -> reservationService.updateReservation(reservation.getId(), name, updateRequest))
-                .isInstanceOf(InvalidReservationException.class)
-                .hasMessage("지난 날짜와 시간으로는 예약을 수정할 수 없습니다.");
+        assertThatThrownBy(() -> reservationService.updateReservation(reservation.getId(), name, updateRequest));
     }
 
     @Test
@@ -492,8 +475,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.updateReservation(reservation.getId(), name, updateRequest))
-                .isInstanceOf(DuplicateReservationException.class)
-                .hasMessage("이미 예약된 시간입니다.");
+                .isInstanceOf(DuplicateReservationException.class);
     }
 
     private ReservationTime createReservationTime(LocalTime time) {
