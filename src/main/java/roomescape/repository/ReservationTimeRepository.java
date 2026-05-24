@@ -1,9 +1,11 @@
 package roomescape.repository;
 
+import static roomescape.domain.exception.DomainErrorCode.RESERVATION_TIME_NOT_FOUND;
+
 import java.util.List;
 import java.util.Optional;
-import roomescape.common.exception.ResourceNotFoundException;
 import roomescape.domain.ReservationTime;
+import roomescape.domain.exception.RoomEscapeException;
 
 public interface ReservationTimeRepository {
 
@@ -18,6 +20,6 @@ public interface ReservationTimeRepository {
     boolean existsById(Long id);
 
     default ReservationTime getById(Long id, String message) {
-        return findById(id).orElseThrow(() -> new ResourceNotFoundException(message));
+        return findById(id).orElseThrow(() -> new RoomEscapeException(RESERVATION_TIME_NOT_FOUND, message));
     }
 }

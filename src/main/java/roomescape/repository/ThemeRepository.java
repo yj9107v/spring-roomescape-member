@@ -1,10 +1,12 @@
 package roomescape.repository;
 
+import static roomescape.domain.exception.DomainErrorCode.THEME_NOT_FOUND;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import roomescape.common.exception.ResourceNotFoundException;
 import roomescape.domain.Theme;
+import roomescape.domain.exception.RoomEscapeException;
 
 public interface ThemeRepository {
 
@@ -19,6 +21,6 @@ public interface ThemeRepository {
     void deleteById(Long id);
 
     default Theme getById(Long id, String message) {
-        return findById(id).orElseThrow(() -> new ResourceNotFoundException(message));
+        return findById(id).orElseThrow(() -> new RoomEscapeException(THEME_NOT_FOUND, message));
     }
 }

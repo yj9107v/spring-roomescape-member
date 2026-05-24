@@ -1,11 +1,13 @@
 package roomescape.service;
 
+import static roomescape.domain.exception.DomainErrorCode.REFERENTIAL_INTEGRITY;
+
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import roomescape.common.exception.InvalidDeleteException;
 import roomescape.domain.Theme;
+import roomescape.domain.exception.RoomEscapeException;
 import roomescape.dto.ThemeRequest;
 import roomescape.repository.ReservationRepository;
 import roomescape.repository.ThemeRepository;
@@ -49,7 +51,7 @@ public class ThemeService {
     @Transactional
     public void deleteTheme(Long id) {
         if (reservationRepository.existsByThemeId(id)) {
-            throw new InvalidDeleteException("해당 테마를 사용 중인 예약이 존재하여 삭제할 수 없습니다.");
+            throw new RoomEscapeException(REFERENTIAL_INTEGRITY, "해당 테마를 사용 중인 예약이 존재하여 삭제할 수 없습니다.");
         }
 
         getTheme(id);

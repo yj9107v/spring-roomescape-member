@@ -1,14 +1,16 @@
 package roomescape.service;
 
+import static roomescape.domain.exception.DomainErrorCode.DUPLICATE_RESERVATION;
+
 import jakarta.annotation.Nonnull;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import roomescape.common.exception.DuplicateReservationException;
 import roomescape.domain.Reservation;
 import roomescape.domain.ReservationTime;
 import roomescape.domain.Theme;
+import roomescape.domain.exception.RoomEscapeException;
 import roomescape.dto.ReservationRequest;
 import roomescape.dto.ReservationUpdateRequest;
 import roomescape.repository.ReservationRepository;
@@ -106,7 +108,7 @@ public class ReservationService {
 
     private void verifyNoConflict(Reservation reservation) {
         if (reservationRepository.existsBy(reservation)) {
-            throw new DuplicateReservationException("이미 같은 시점·테마에 예약이 존재합니다.");
+            throw new RoomEscapeException(DUPLICATE_RESERVATION, "이미 같은 시점·테마에 예약이 존재합니다.");
         }
     }
 }

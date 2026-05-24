@@ -12,13 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import roomescape.common.exception.DuplicateReservationException;
-import roomescape.common.exception.ForbiddenException;
-import roomescape.common.exception.InvalidReservationException;
-import roomescape.common.exception.ResourceNotFoundException;
 import roomescape.domain.Reservation;
 import roomescape.domain.ReservationTime;
 import roomescape.domain.Theme;
+import roomescape.domain.exception.RoomEscapeException;
 import roomescape.dto.ReservationRequest;
 import roomescape.dto.ReservationUpdateRequest;
 import roomescape.repository.ReservationTimeRepository;
@@ -75,7 +72,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.addReservation(request))
-                .isInstanceOf(ResourceNotFoundException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -90,7 +87,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.addReservation(request))
-                .isInstanceOf(ResourceNotFoundException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -108,7 +105,7 @@ class ReservationServiceTest {
         reservationService.addReservation(request);
 
         assertThatThrownBy(() -> reservationService.addReservation(request))
-                .isInstanceOf(DuplicateReservationException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -125,7 +122,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.addReservation(request))
-                .isInstanceOf(InvalidReservationException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -142,7 +139,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.addReservation(request))
-                .isInstanceOf(InvalidReservationException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -245,13 +242,13 @@ class ReservationServiceTest {
         reservationService.deleteReservation(savedReservation.getId());
 
         assertThatThrownBy(() -> reservationService.getReservation(savedReservation.getId()))
-                .isInstanceOf(ResourceNotFoundException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
     void 없는_예약을_삭제할_수_없다() {
         assertThatThrownBy(() -> reservationService.deleteReservation(1L))
-                .isInstanceOf(ResourceNotFoundException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -271,13 +268,13 @@ class ReservationServiceTest {
         reservationService.cancelMyReservation(reservation.getId(), name);
 
         assertThatThrownBy(() -> reservationService.getReservation(reservation.getId()))
-                .isInstanceOf(ResourceNotFoundException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
     void 사용자_예약을_취소할_때_존재하지_않는_예약이면_예외() {
         assertThatThrownBy(() -> reservationService.cancelMyReservation(1L, "브라운"))
-                .isInstanceOf(ResourceNotFoundException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -297,7 +294,7 @@ class ReservationServiceTest {
         String userName = "브리";
 
         assertThatThrownBy(() -> reservationService.cancelMyReservation(reservation.getId(), userName))
-                .isInstanceOf(ForbiddenException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -313,7 +310,7 @@ class ReservationServiceTest {
 
         assertThat(dateTime.isBefore(LocalDateTime.now())).isTrue();
         assertThatThrownBy(() -> reservationService.cancelMyReservation(pastReservation.getId(), name))
-                .isInstanceOf(InvalidReservationException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -356,7 +353,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.updateReservation(1L, "브라운", updateRequest))
-                .isInstanceOf(ResourceNotFoundException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -380,7 +377,7 @@ class ReservationServiceTest {
         String userName = "브리";
 
         assertThatThrownBy(() -> reservationService.updateReservation(reservation.getId(), userName, updateRequest))
-                .isInstanceOf(ForbiddenException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -402,7 +399,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.updateReservation(reservation.getId(), name, updateRequest))
-                .isInstanceOf(ResourceNotFoundException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -421,7 +418,7 @@ class ReservationServiceTest {
         LocalDateTime dateTime = LocalDateTime.of(pastReservation.getDate(), pastReservation.getTime().getStartAt());
         assertThat(dateTime.isBefore(LocalDateTime.now())).isTrue();
         assertThatThrownBy(() -> reservationService.updateReservation(pastReservationId, name, updateRequest))
-                .isInstanceOf(InvalidReservationException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -475,7 +472,7 @@ class ReservationServiceTest {
         );
 
         assertThatThrownBy(() -> reservationService.updateReservation(reservation.getId(), name, updateRequest))
-                .isInstanceOf(DuplicateReservationException.class);
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     private ReservationTime createReservationTime(LocalTime time) {

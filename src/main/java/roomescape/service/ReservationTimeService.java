@@ -1,13 +1,15 @@
 package roomescape.service;
 
+import static roomescape.domain.exception.DomainErrorCode.REFERENTIAL_INTEGRITY;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import roomescape.common.exception.InvalidDeleteException;
 import roomescape.domain.ReservationTime;
 import roomescape.domain.ReservationTimeStatus;
+import roomescape.domain.exception.RoomEscapeException;
 import roomescape.dto.ReservationTimeRequest;
 import roomescape.repository.ReservationRepository;
 import roomescape.repository.ReservationTimeRepository;
@@ -51,7 +53,7 @@ public class ReservationTimeService {
     @Transactional
     public void deleteReservationTime(Long id) {
         if (reservationRepository.existsByTimeId(id)) {
-            throw new InvalidDeleteException("해당 시간을 사용 중인 예약이 존재하여 삭제할 수 없습니다.");
+            throw new RoomEscapeException(REFERENTIAL_INTEGRITY, "해당 시간을 사용 중인 예약이 존재하여 삭제할 수 없습니다.");
         }
 
         getReservationTime(id);

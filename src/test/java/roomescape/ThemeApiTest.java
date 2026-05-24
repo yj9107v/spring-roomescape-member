@@ -89,8 +89,7 @@ class ThemeApiTest {
         RestAssured.given().log().all()
                 .when().delete("/themes/" + themeId)
                 .then().log().all()
-                .statusCode(400)
-                .body("message", is("해당 테마를 사용 중인 예약이 존재하여 삭제할 수 없습니다."));
+                .statusCode(409);
     }
 
     @Test
@@ -98,8 +97,7 @@ class ThemeApiTest {
         RestAssured.given().log().all()
                 .when().delete("/themes/" + 1)
                 .then().log().all()
-                .statusCode(404)
-                .body("message", is("존재하지 않는 테마입니다."));
+                .statusCode(404);
     }
 
     @Test

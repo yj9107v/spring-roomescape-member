@@ -1,9 +1,11 @@
 package roomescape.domain;
 
+import static roomescape.domain.exception.DomainErrorCode.PAST_RESERVATION;
+import static roomescape.domain.exception.DomainErrorCode.UNAUTHORIZED_RESERVATION;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import roomescape.common.exception.ForbiddenException;
-import roomescape.common.exception.InvalidReservationException;
+import roomescape.domain.exception.RoomEscapeException;
 
 public class Reservation {
     private final Long id;
@@ -37,7 +39,7 @@ public class Reservation {
 
     public void verifyReservable(LocalDateTime now) {
         if (isPast(now)) {
-            throw new InvalidReservationException("과거 시점에 예약할 수 없습니다.");
+            throw new RoomEscapeException(PAST_RESERVATION, "과거 시점에 예약할 수 없습니다.");
         }
     }
 
@@ -48,24 +50,24 @@ public class Reservation {
     public void cancelBy(String name, LocalDateTime now) {
         verifyReservedBy(name, "본인의 예약만 취소할 수 있습니다.");
         if (isPast(now)) {
-            throw new InvalidReservationException("이미 지난 예약은 취소할 수 없습니다.");
+            throw new RoomEscapeException(PAST_RESERVATION, "이미 지난 예약은 취소할 수 없습니다.");
         }
     }
 
     public Reservation changeBy(String name, LocalDateTime now, LocalDate newDate, ReservationTime newTime) {
         verifyReservedBy(name, "본인의 예약만 변경할 수 있습니다.");
         if (isPast(now)) {
-            throw new InvalidReservationException("이미 지난 예약은 변경할 수 없습니다.");
+            throw new RoomEscapeException(PAST_RESERVATION, "이미 지난 예약은 변경할 수 없습니다.");
         }
         if (LocalDateTime.of(newDate, newTime.getStartAt()).isBefore(now)) {
-            throw new InvalidReservationException("과거 시점으로 변경할 수 없습니다.");
+            throw new RoomEscapeException(PAST_RESERVATION, "과거 시점으로 변경할 수 없습니다.");
         }
         return new Reservation(id, this.name, newDate, newTime, theme);
     }
 
     private void verifyReservedBy(String other, String message) {
         if (!this.name.equals(other)) {
-            throw new ForbiddenException(message);
+            throw new RoomEscapeException(UNAUTHORIZED_RESERVATION, message);
         }
     }
 

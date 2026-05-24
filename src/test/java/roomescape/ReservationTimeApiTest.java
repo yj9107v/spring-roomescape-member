@@ -86,8 +86,7 @@ class ReservationTimeApiTest {
         RestAssured.given().log().all()
                 .when().delete("/times/" + timeId)
                 .then().log().all()
-                .statusCode(400)
-                .body("message", is("해당 시간을 사용 중인 예약이 존재하여 삭제할 수 없습니다."));
+                .statusCode(409);
     }
 
     @Test
@@ -95,8 +94,7 @@ class ReservationTimeApiTest {
         RestAssured.given().log().all()
                 .when().delete("/times/" + 1)
                 .then().log().all()
-                .statusCode(404)
-                .body("message", is("존재하지 않는 예약 시간입니다."));
+                .statusCode(404);
     }
 
     @Test

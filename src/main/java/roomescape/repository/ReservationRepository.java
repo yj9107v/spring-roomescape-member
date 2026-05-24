@@ -1,11 +1,13 @@
 package roomescape.repository;
 
+import static roomescape.domain.exception.DomainErrorCode.RESERVATION_NOT_FOUND;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import roomescape.common.exception.ResourceNotFoundException;
 import roomescape.domain.Reservation;
+import roomescape.domain.exception.RoomEscapeException;
 
 public interface ReservationRepository {
 
@@ -30,6 +32,6 @@ public interface ReservationRepository {
     void updateDateTime(Reservation updated);
 
     default Reservation getById(Long id, String message) {
-        return findById(id).orElseThrow(() -> new ResourceNotFoundException(message));
+        return findById(id).orElseThrow(() -> new RoomEscapeException(RESERVATION_NOT_FOUND, message));
     }
 }

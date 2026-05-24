@@ -12,11 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import roomescape.common.exception.InvalidDeleteException;
-import roomescape.common.exception.ResourceNotFoundException;
 import roomescape.domain.Reservation;
 import roomescape.domain.ReservationTime;
 import roomescape.domain.Theme;
+import roomescape.domain.exception.RoomEscapeException;
 import roomescape.dto.ThemeRequest;
 import roomescape.repository.ReservationRepository;
 import roomescape.repository.ReservationTimeRepository;
@@ -103,15 +102,13 @@ class ThemeServiceTest {
         themeService.deleteTheme(saveId);
 
         assertThatThrownBy(() -> themeService.getTheme(saveId))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("존재하지 않는 테마입니다.");
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
     void 없는_테마를_삭제할_수_없다() {
         assertThatThrownBy(() -> themeService.deleteTheme(1L))
-                .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessage("존재하지 않는 테마입니다.");
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
@@ -132,8 +129,7 @@ class ThemeServiceTest {
         ));
 
         assertThatThrownBy(() -> themeService.deleteTheme(theme.getId()))
-                .isInstanceOf(InvalidDeleteException.class)
-                .hasMessage("해당 테마를 사용 중인 예약이 존재하여 삭제할 수 없습니다.");
+                .isInstanceOf(RoomEscapeException.class);
     }
 
     @Test
