@@ -6,9 +6,9 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import roomescape.common.exception.InvalidDeleteException;
+import roomescape.domain.ReservationTime;
 import roomescape.domain.ReservationTimeStatus;
 import roomescape.dto.ReservationTimeRequest;
-import roomescape.entity.ReservationTime;
 import roomescape.repository.ReservationRepository;
 import roomescape.repository.ReservationTimeRepository;
 

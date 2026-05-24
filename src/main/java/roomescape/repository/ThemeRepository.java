@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import roomescape.common.exception.ResourceNotFoundException;
-import roomescape.entity.Theme;
+import roomescape.domain.Theme;
 
 public interface ThemeRepository {
 

@@ -1,7 +1,5 @@
 package roomescape.domain;
 
-import roomescape.entity.ReservationTime;
-
 public class ReservationTimeStatus {
 
     private final ReservationTime reservationTime;

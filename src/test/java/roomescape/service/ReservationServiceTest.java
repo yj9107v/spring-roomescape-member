@@ -16,11 +16,11 @@ import roomescape.common.exception.DuplicateReservationException;
 import roomescape.common.exception.ForbiddenException;
 import roomescape.common.exception.InvalidReservationException;
 import roomescape.common.exception.ResourceNotFoundException;
+import roomescape.domain.Reservation;
+import roomescape.domain.ReservationTime;
+import roomescape.domain.Theme;
 import roomescape.dto.ReservationRequest;
 import roomescape.dto.ReservationUpdateRequest;
-import roomescape.entity.Reservation;
-import roomescape.entity.ReservationTime;
-import roomescape.entity.Theme;
 import roomescape.repository.ReservationTimeRepository;
 import roomescape.repository.ThemeRepository;
 

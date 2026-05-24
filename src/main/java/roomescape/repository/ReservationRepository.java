@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import roomescape.common.exception.ResourceNotFoundException;
-import roomescape.entity.Reservation;
+import roomescape.domain.Reservation;
 
 public interface ReservationRepository {
 
