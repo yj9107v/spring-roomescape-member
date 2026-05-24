@@ -88,7 +88,7 @@ public class ReservationService {
     @Transactional
     public void cancelMyReservation(Long id, String name) {
         Reservation reservation = getReservation(id);
-        reservation.cancelBy(name, LocalDateTime.now());
+        reservation.verifyCancelableBy(name, LocalDateTime.now());
         reservationRepository.deleteById(id);
     }
 

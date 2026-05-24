@@ -47,7 +47,7 @@ public class Reservation {
         return LocalDateTime.of(date, time.getStartAt()).isBefore(now);
     }
 
-    public void cancelBy(String name, LocalDateTime now) {
+    public void verifyCancelableBy(String name, LocalDateTime now) {
         verifyReservedBy(name, "본인의 예약만 취소할 수 있습니다.");
         if (isPast(now)) {
             throw new RoomEscapeException(PAST_RESERVATION, "이미 지난 예약은 취소할 수 없습니다.");

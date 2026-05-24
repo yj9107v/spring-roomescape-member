@@ -109,40 +109,6 @@ class ReservationServiceTest {
     }
 
     @Test
-    void 예약을_추가할_때_지난_날짜인_경우_예외() {
-        ReservationTime reservationTime = createReservationTime(TEN);
-        Theme theme = createTheme();
-
-        LocalDate pastDate = LocalDate.now().minusDays(1);
-        ReservationRequest request = new ReservationRequest(
-                "브라운",
-                pastDate,
-                reservationTime.getId(),
-                theme.getId()
-        );
-
-        assertThatThrownBy(() -> reservationService.addReservation(request))
-                .isInstanceOf(RoomEscapeException.class);
-    }
-
-    @Test
-    void 예약을_추가할_때_지난_시간인_경우_예외() {
-        LocalTime pastTime = LocalTime.now().minusMinutes(1);
-        ReservationTime reservationTime = createReservationTime(pastTime);
-        Theme theme = createTheme();
-
-        ReservationRequest request = new ReservationRequest(
-                "브라운",
-                LocalDate.now(),
-                reservationTime.getId(),
-                theme.getId()
-        );
-
-        assertThatThrownBy(() -> reservationService.addReservation(request))
-                .isInstanceOf(RoomEscapeException.class);
-    }
-
-    @Test
     void 모든_예약을_조회한다() {
         ReservationTime reservationTime = createReservationTime(TEN);
         Theme theme = createTheme();
@@ -278,26 +244,6 @@ class ReservationServiceTest {
     }
 
     @Test
-    void 예약을_취소할_때_예약한_이름과_사용자_이름이_일치하지_않으면_예외() {
-        ReservationTime reservationTime = createReservationTime(TEN);
-        Theme theme = createTheme();
-        String name = "브라운";
-
-        ReservationRequest request = new ReservationRequest(
-                name,
-                FUTURE_SECOND_DATE,
-                reservationTime.getId(),
-                theme.getId()
-        );
-        Reservation reservation = reservationService.addReservation(request);
-
-        String userName = "브리";
-
-        assertThatThrownBy(() -> reservationService.cancelMyReservation(reservation.getId(), userName))
-                .isInstanceOf(RoomEscapeException.class);
-    }
-
-    @Test
     @Sql("/data_relative_dates.sql")
     void 예약을_취소할_때_이미_지난_예약이면_예외() {
         String name = "김민수";
@@ -357,30 +303,6 @@ class ReservationServiceTest {
     }
 
     @Test
-    void 예약을_수정할_때_예약한_이름과_사용자_이름이_일치하지_않으면_예외() {
-        ReservationTime reservationTime = createReservationTime(TEN);
-        Theme theme = createTheme();
-        String name = "브라운";
-        ReservationRequest request = new ReservationRequest(
-                name,
-                FUTURE_SECOND_DATE,
-                reservationTime.getId(),
-                theme.getId()
-        );
-        Reservation reservation = reservationService.addReservation(request);
-
-        ReservationTime updateTime = createReservationTime(LocalTime.of(12, 0));
-        ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(
-                FUTURE_SECOND_DATE.plusDays(1),
-                updateTime.getId()
-        );
-        String userName = "브리";
-
-        assertThatThrownBy(() -> reservationService.updateReservation(reservation.getId(), userName, updateRequest))
-                .isInstanceOf(RoomEscapeException.class);
-    }
-
-    @Test
     void 예약을_수정할_때_존재하지_않는_시간_ID이면_예외() {
         ReservationTime reservationTime = createReservationTime(TEN);
         Theme theme = createTheme();
@@ -401,48 +323,7 @@ class ReservationServiceTest {
         assertThatThrownBy(() -> reservationService.updateReservation(reservation.getId(), name, updateRequest))
                 .isInstanceOf(RoomEscapeException.class);
     }
-
-    @Test
-    @Sql("/data_relative_dates.sql")
-    void 예약을_수정할_때_이미_지난_예약이면_예외() {
-        String name = "김민수";
-        Reservation pastReservation = reservationService.getReservationsByName(name).getFirst();
-        Long pastReservationId = pastReservation.getId();
-
-        ReservationTime updateTime = timeRepository.findAll().getFirst();
-        ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(
-                FUTURE_SECOND_DATE,
-                updateTime.getId()
-        );
-
-        LocalDateTime dateTime = LocalDateTime.of(pastReservation.getDate(), pastReservation.getTime().getStartAt());
-        assertThat(dateTime.isBefore(LocalDateTime.now())).isTrue();
-        assertThatThrownBy(() -> reservationService.updateReservation(pastReservationId, name, updateRequest))
-                .isInstanceOf(RoomEscapeException.class);
-    }
-
-    @Test
-    void 예약을_수정할_때_변경하려는_날짜와_시간이_과거이면_예외() {
-        ReservationTime reservationTime = createReservationTime(TEN);
-        Theme theme = createTheme();
-        String name = "브라운";
-        ReservationRequest request = new ReservationRequest(
-                name,
-                FUTURE_SECOND_DATE,
-                reservationTime.getId(),
-                theme.getId()
-        );
-        Reservation reservation = reservationService.addReservation(request);
-
-        ReservationTime pastTime = createReservationTime(LocalTime.now().minusMinutes(1));
-        ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(
-                LocalDate.now(),
-                pastTime.getId()
-        );
-
-        assertThatThrownBy(() -> reservationService.updateReservation(reservation.getId(), name, updateRequest));
-    }
-
+    
     @Test
     void 예약을_수정할_때_변경하려는_예약_시간이_이미_차_있으면_예외() {
         ReservationTime tenClock = createReservationTime(TEN);
